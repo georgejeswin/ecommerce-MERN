@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { auth } from "../../firebase";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 const Register = () => {
   const [email, setEmail] = useState("");
