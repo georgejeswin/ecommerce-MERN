@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { auth } from "../../firebase";
+import { auth, googleAuthProvider } from "../../firebase";
 import { toast } from "react-toastify";
 import { Button } from "antd";
-import { MailOutlined } from "@ant-design/icons";
+import { MailOutlined, GoogleOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
+import { Spin, Space } from "antd";
 
 const Login = ({ history }) => {
   const [email, setEmail] = useState("georgejeswin2000@gmail.com");
@@ -33,6 +34,28 @@ const Login = ({ history }) => {
       console.log(error);
       toast.error(error.message);
     }
+  };
+
+  const handelGoogleLogin = async () => {
+    auth
+      .signInWithPopup(googleAuthProvider)
+      .then(async (result) => {
+        const { user } = result;
+        const idTokenResult = await user.getIdTokenResult();
+        history.push("/");
+
+        dispatch({
+          type: "LOGGEED_IN_USER",
+          payload: {
+            email: user.email,
+            token: idTokenResult.token,
+          },
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error(error.message);
+      });
   };
 
   const loginForm = () => (
@@ -73,8 +96,26 @@ const Login = ({ history }) => {
     <div className="container p-5 col-offset-md-3 ">
       <div className="row">
         <div className="col-md-6 col-offset-md-3">
-          <h2>Login</h2>
-          {loginForm()}
+          {loading ? (
+            <Space size="middle">
+              <Spin size="large" />
+            </Space>
+          ) : (
+            <>
+              <h2>Login</h2>
+              {loginForm()}
+              <Button
+                onClick={handelGoogleLogin}
+                type="danger"
+                block
+                shape="round"
+                icon={<GoogleOutlined />}
+                size="large"
+              >
+                Login with Google
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </div>
