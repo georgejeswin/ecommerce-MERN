@@ -5,6 +5,7 @@ import { Button } from "antd";
 import { MailOutlined, GoogleOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
 import { Spin, Space } from "antd";
+import { Link } from "react-router-dom";
 
 const Login = ({ history }) => {
   const [email, setEmail] = useState("georgejeswin2000@gmail.com");
@@ -93,7 +94,7 @@ const Login = ({ history }) => {
     </form>
   );
   return (
-    <div className="container p-5 col-offset-md-3 ">
+    <div className="container col-md-9 offset-md-3 p-5">
       <div className="row">
         <div className="col-md-6 col-offset-md-3">
           {loading ? (
@@ -114,6 +115,12 @@ const Login = ({ history }) => {
               >
                 Login with Google
               </Button>
+              <Link
+                to="/forgot/password"
+                className="float-right text-danger mt-3"
+              >
+                Forgot Password
+              </Link>
             </>
           )}
         </div>
